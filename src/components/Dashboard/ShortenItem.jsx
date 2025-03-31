@@ -20,6 +20,11 @@ const ShortenItem = ({ originalUrl, shortUrl, clickCount, createdDate }) => {
   const [selectedUrl, setSelectedUrl] = useState("");
   const [analyticsData, setAnalyticsData] = useState([]);
 
+  const endDate = new Date().toISOString().split('T')[0];
+  const startDate = new Date();
+  startDate.setMonth(startDate.getMonth() - 3);
+  const formattedStartDate = startDate.toISOString().split('T')[0];
+
   const subDomain = import.meta.env.VITE_REACT_FRONT_END_URL.replace(
     /^https?:\/\//,
     ""
@@ -35,7 +40,7 @@ const ShortenItem = ({ originalUrl, shortUrl, clickCount, createdDate }) => {
   const fetchMyShortUrl = async () => {
     setLoader(true);
     try {
-      const { data } = await api.get(`/api/urls/analytics/${selectedUrl}?startDate=2024-12-01T00:00:00&endDate=2025-12-31T23:59:59`, {
+      const { data } = await api.get(`/api/urls/analytics/${selectedUrl}?startDate=${formattedStartDate}T00:00:00&endDate=${endDate}T23:59:59`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
